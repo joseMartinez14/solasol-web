@@ -1,3 +1,5 @@
+import { Company } from "../authentication/dtos/Users";
+
 export type Product = {
     id: number;
     name: string;
@@ -8,6 +10,7 @@ export type Product = {
     created_at?: Date;
     updated_at?: Date;
     stock: number;
+    company?: Company;
     productImages?: ProductImages[];
     categories?: CompanyCategory[];
 };
@@ -40,7 +43,7 @@ export type createOrUpdateDto = {
     stock: number;
     productNewImages: File[];
     productImagesIDToDelete: number[];
-    addCategories: CompanyCategory[];
-    deleteCategories: CompanyCategory[];
+    addCategories: string[];
+    deleteCategories: string[];
 }
 

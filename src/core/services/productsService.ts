@@ -25,12 +25,17 @@ const fetchProductsByCompany = async (company_id: string) => {
 
 const fetchProductById = async (id: string) => {
     //SHOULD INCLUDE THE ID. THERE IS NO CASE WHERE I NEED ALL THE PRODUCTS FOR ALL COMPANIES
-  return await api
+    console.log("Me cago en la putaa")
+    return await api
     .get<Product>(`/products/${id}`)
     .then((res) => {
+      console.log("Resultado de fetchProductById: ");
+      console.log(res)
       return res.data;
     })
-    .catch((err) => {throw err});
+    .catch((err) => {
+      console.log("MIerdaaaaaaa");
+      throw err});
 };
 
 const createOrUpdateProduct = async (data: createOrUpdateDto) => {
@@ -61,13 +66,14 @@ const createOrUpdateProduct = async (data: createOrUpdateDto) => {
 
   if(data.addCategories){ 
     data.addCategories.forEach((category, index) => {
-      formData.append(`addCategories`, JSON.stringify(category));
+      formData.append(`addCategories`, category);
     });
   }
 
   if(data.deleteCategories){ 
+    const categories = Array.isArray(data.deleteCategories) ? data.deleteCategories : [data.deleteCategories];
     data.deleteCategories.forEach((category, index) => {
-      formData.append(`deleteCategories`, JSON.stringify(category));
+      formData.append(`deleteCategories`, category);
     });
   }
 

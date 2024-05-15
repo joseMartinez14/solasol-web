@@ -1,17 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { AppBar, Box, Button, Toolbar, Typography, makeStyles } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 import { COLORS } from '../../../utils/Contants';
 import RecommendIcon from '@mui/icons-material/Recommend';
+import { useMyCompany } from '../../../core/hooks/CompanyHook';
+import { AppContext } from '../../../context/AppContext';
+import { useNavigate } from "react-router-dom";
+
 
 function Header() {
 
     const [CompanyLogged, setCompanyLogged] = useState<string>(localStorage.getItem('instaCatalogCompanyName') || '');
 
+    const { logOut } = React.useContext(AppContext);
+    const navigate = useNavigate();
+
+
+
     useEffect(() => {
         setCompanyLogged(localStorage.getItem('instaCatalogCompanyName') || '');
     })
+
+    const logOutClick = () => {
+        console.log("Salgase de aqui carepicha");
+        logOut();
+        navigate('/');
+    }
 
     return (
         <AppBar position="static" sx={{ backgroundColor: "black", mb: 2, height: 60 }}>
@@ -21,9 +36,9 @@ function Header() {
                     {CompanyLogged}
                 </Typography>
                 <Box>
-                    <Button component={Link} to="/company/1" sx={{ color: COLORS.headerTextColor }}>Listar Productos</Button>
-                    <Button component={Link} to="/company/1/product" sx={{ color: COLORS.headerTextColor }}>Agregar Producto</Button>
-                    <Button sx={{ color: COLORS.headerTextColor }}>Logout</Button>
+                    <Button component={Link} to="/company" sx={{ color: COLORS.headerTextColor }}>Listar Productos</Button>
+                    <Button component={Link} to="/company/product" sx={{ color: COLORS.headerTextColor }}>Agregar Producto</Button>
+                    <Button sx={{ color: COLORS.headerTextColor }} onClick={logOutClick}>Logout</Button>
                 </Box>
             </Toolbar>
         </AppBar>

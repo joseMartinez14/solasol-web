@@ -33,9 +33,9 @@ const ShowHome = () => {
                 <Typography variant="h5" component="div">
                     ¿Para que sirve esta pagina?
                 </Typography>
-                <Typography component="div" p={3}>
-                    Si eres una empresa pequena y quieres tener un catalogo digital GRATIS y sin preocuparte por el papeleo de un ecomerce completo.
-                    Entonces somos para ustedes
+                <Typography component="div" py={3} px={5} textAlign={'center'}>
+                    Para pequeñas empresas que quieran administrar y presentar sus productos.
+                    Tendras un catalogo virtual en el los cliente podran ver los productos disponible, ver las fotos, precios, descuentos y hasta tener un boton que direccione a su whatsapp para generar una venta.
                 </Typography>
             </Box>
         </>

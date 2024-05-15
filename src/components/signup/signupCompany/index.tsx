@@ -7,6 +7,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
+import { Google as GoogleIcon } from '@mui/icons-material';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
@@ -16,6 +17,7 @@ import { AppContext } from '../../../context/AppContext';
 import { useForm } from 'react-hook-form';
 import { SignUpCompanyForm } from '../type';
 import TextInput from '../../shared/TextInput';
+import { COLORS } from '../../../utils/Contants';
 
 function Copyright(props: any) {
     return (
@@ -45,7 +47,11 @@ export default function SignCompanyUp() {
 
     const onSubmit = async (data: SignUpCompanyForm) => {
         console.log("THis is on submit login: ", data);
-        const output = await createOnlyCompany(data.companyName, data.companyDescription)
+        let parsedPhone = "";
+        if (data.phoneNumber) {
+            parsedPhone = `506${data.phoneNumber}`;
+        }
+        const output = await createOnlyCompany(data.companyName, data.companyDescription, parsedPhone)
         console.log("---- output of handle submit -----");
         console.log(output);
     }
@@ -97,6 +103,51 @@ export default function SignCompanyUp() {
                                     error={errors?.companyDescription ? "Inserte la descripcion de la compañia" : undefined}
                                 />
                             </Grid>
+                            <Grid item xs={4}>
+                                <>
+                                    <Typography
+                                        variant="subtitle2"
+                                        gutterBottom
+                                        sx={{
+                                            color: COLORS.black,
+                                            fontSize: '18px',
+                                            margin: 0,
+                                            padding: 0,
+                                            fontWeight: 500,
+                                        }}>
+                                        {"País"}
+                                    </Typography>
+                                    <TextField
+                                        disabled
+                                        sx={{
+                                            width: '100%',
+                                            color: COLORS.secondary,
+                                            borderColor: COLORS.neutral400,
+                                        }}
+                                        inputProps={{
+                                            style: {
+                                                height: '16px',
+                                                backgroundColor: COLORS.neutral100,
+                                            },
+                                        }}
+                                        value={"506"}
+                                        id={"Country-506"}
+                                        variant="outlined"
+                                    />
+                                </>
+
+                            </Grid>
+                            <Grid item xs={8}>
+                                <TextInput
+                                    control={control}
+                                    title={"# whatsapp"}
+                                    value="phoneNumber"
+                                    isRequired={false}
+                                    styles={{ mb: 3 }}
+                                    justNumber
+                                    error={errors?.phoneNumber ? "Inserte el numero de la compañia" : undefined}
+                                />
+                            </Grid>
                         </Grid>
                         <Button
                             type="submit"
@@ -110,6 +161,7 @@ export default function SignCompanyUp() {
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
+                            startIcon={<GoogleIcon />}
                             onClick={handleGoogleSignIn}
                         >
                             Sign Up with google

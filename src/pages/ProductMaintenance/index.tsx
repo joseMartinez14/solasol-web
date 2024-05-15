@@ -12,6 +12,7 @@ import InsertImages from "../../components/catalog/insertImages";
 import ManageCategories from "../../components/catalog/manageCategories";
 import { AxiosError } from "axios";
 import { useAllCompanyCategories } from "../../core/hooks/CategoryHook";
+import LoadingModal from "../../components/shared/LoadingModal";
 
 interface ImageItem {
     id: number;
@@ -45,27 +46,19 @@ const ProductMaintenance = () => {
     const { data: allCategories, isLoading: categoriesLoading, error: categoriesError } = useAllCompanyCategories();
 
     useEffect(() => {
-        console.log("Si cambio el is error");
-        console.log(productError)
-        if (productError) {
-            if (productError instanceof AxiosError) {
-                if (productError.response && productError.response.status === 401) {
-                    console.log("Si fallo la autenticacion")
-                    navigate("/signin");
-                }
-            } else {
-                console.log("Mierdaaaa")
-            }
+        if (categoriesError) {
+            navigate("/signin");
         }
 
-    }, [productError]);
+    }, [categoriesError]);
 
-    useEffect(() => {
-        if (allCategories) setcategoryList([...categoryList, ...allCategories])
-    }, [allCategories]);
+    const { mutate, data: createProductReturn, error, isSuccess, isPending } = useCreateProduct();
 
-
-    const { mutate, data, error, isSuccess, isPending } = useCreateProduct();
+    useEffect((() => {
+        if (createProductReturn) {
+            console.log(createProductReturn);
+        }
+    }), [createProductReturn]);
 
     const {
         control,
@@ -75,6 +68,7 @@ const ProductMaintenance = () => {
         setValue,
     } = useForm<ProductMaintenanceForm>({
         defaultValues: {
+            id: -1,
             name: '',
             description: '',
             price: '',
@@ -90,6 +84,7 @@ const ProductMaintenance = () => {
     useEffect(() => {
         console.log("This is the product: ", product);
         if (product) {
+            setValue('id', product.id);
             setValue('name', product.name);
             setValue('description', product.description);
             setValue('price', String(product.price));
@@ -98,9 +93,11 @@ const ProductMaintenance = () => {
             setValue('currency', product.currency);
 
             if (product.productImages) {
-                product.productImages.forEach((img) => {
-                    setImageList([...imageList, { id: img.id, url: img.url }])
-                });
+                setImageList([...product.productImages]);
+            }
+
+            if (product.categories) {
+                setcategoryList([...categoryList, ...product.categories]);
             }
         }
     }, [product]);
@@ -127,7 +124,7 @@ const ProductMaintenance = () => {
         console.log("Estoy en onsubmit", data);
         const newImagelist = imageList.filter(obj => obj.id < 0);
         const structure_data = {
-            id: -1,
+            id: data.id,
             name: data.name,
             description: data.description,
             price: Number(data.price),
@@ -136,8 +133,8 @@ const ProductMaintenance = () => {
             stock: Number(data.stock),
             productNewImages: newImagelist.map(obj => obj.file!),
             productImagesIDToDelete: imagesToDelete.map(obj => obj.id),
-            addCategories: categoryList,
-            deleteCategories: categoriesToDelete
+            addCategories: categoryList.map(obj => obj.name),
+            deleteCategories: categoriesToDelete.map(obj => obj.name)
         };
         console.log("structured data")
         console.log(structure_data)
@@ -148,7 +145,7 @@ const ProductMaintenance = () => {
         if (imageID > 0) {
             const item = imageList.find(item => item.id === imageID);
             if (item) {
-                setImagesToDelete([...imageList, item]);
+                setImagesToDelete([...imagesToDelete, item]);
             }
         }
         const updatedImageList = imageList.filter((item) => item.id !== imageID);
@@ -157,6 +154,7 @@ const ProductMaintenance = () => {
 
     return (
         <div  >
+            <LoadingModal open={(productsLoading || categoriesLoading)} />
             <Box textAlign="center" pt={4}>
                 <Typography variant="h4" sx={{ fontSize: "32px" }}>
                     Agregar/Modificar Producto
@@ -270,7 +268,7 @@ const ProductMaintenance = () => {
                             <Typography variant="h4" sx={{ fontSize: "24px", pb: 4 }}>
                                 Preview:
                             </Typography>
-                            <ProductItem images={imageList} title={formData.name || ""} subtitle={formData.description || ""} cardHeight={600} cardWidth={350} price={Number(formData.price || "")} stock={Number(formData.stock || "")} discount={Number(formData.discount || "")} currency={formData.currency || ""} />
+                            <ProductItem images={imageList} title={formData.name || ""} subtitle={formData.description || ""} cardHeight={600} cardWidth={350} price={Number(formData.price || "")} stock={Number(formData.stock || "")} discount={Number(formData.discount || "")} currency={formData.currency || ""} whatsapp={product?.company?.phoneNumber} />
                         </Box>
                     </Grid>
                     <Grid item md={6} xs={12} >
@@ -280,7 +278,6 @@ const ProductMaintenance = () => {
                                 display: 'flex',
                                 alignItems: 'center',
                                 flexDirection: 'column',
-                                border: '1px solid #000',
                                 minHeight: '250px',
                                 pt: 2
                             }}

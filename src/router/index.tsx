@@ -18,15 +18,10 @@ const AppRouter = () => {
                 <Route element={<MyLayout />}>
                     <Route element={<Home />} path="/" />
                 </Route>
-                <Route element={<VisitorLayout />}>
-                    <Route element={<DisplayMessage />} path="/kims_party" />
-                    <Route element={<Catalog />} path="/catalog" />
-                </Route>
-                <Route element={<PrivateOnlyRoutes />}>
-                    <Route element={<CompanyLayout />}>
-                        <Route element={<CompanyHome />} path="/company" />
-                        <Route element={<ProductMaintenance />} path="/company/product/:product_id?" />
-                    </Route>
+                <Route element={<Catalog />} path="/:company_id/catalog" />
+                <Route element={<CompanyLayout />}>
+                    <Route element={<CompanyHome />} path="/company" />
+                    <Route element={<ProductMaintenance />} path="/company/product/:product_id?" />
                 </Route>
                 <Route element={<SignUp />} path="/signup" />
                 <Route element={<SignCompanyUp />} path="/signCompanyUp" />

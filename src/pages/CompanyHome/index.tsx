@@ -7,9 +7,9 @@ import { Product } from "../../core/dtos/Products";
 import TableExample from "../../components/company/chatgpt/tableExample";
 import { Description } from "@mui/icons-material";
 import ProductsTable from "../../components/company/productsTable";
-import { useParams } from "react-router-dom";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
+import LoadingModal from "../../components/shared/LoadingModal";
 
 
 interface Data {
@@ -30,15 +30,8 @@ const CompanyHome = () => {
     const { data: allProducts, isLoading, error } = useProducts();
 
     useEffect(() => {
-        console.log("Si cambio el is error");
-        console.log(error)
         if (error) {
-            if (error instanceof AxiosError) {
-                if (error.response && error.response.status === 401) {
-                    console.log("Si fallo la autenticacion")
-                    navigate("/signin");
-                }
-            }
+            navigate("/signin");
         }
 
     }, [error]);
@@ -65,6 +58,7 @@ const CompanyHome = () => {
 
     return (
         <div  >
+            <LoadingModal open={(isLoading)} />
             <Box textAlign="center" pt={4}>
                 <Typography variant="h4" sx={{ fontSize: "32px" }}>
                     My Products

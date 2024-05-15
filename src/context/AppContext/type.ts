@@ -5,8 +5,8 @@ export type AuthContext = {
     logOut: () => void;
     googleSignIn: () => Promise<GeneralSignInOutput>;
     emailPasswordSignIn: (email: string, password: string, ) => Promise<GeneralSignInOutput>;
-    emailPasswordCreateUser: (email: string, password: string, name: string, company_name: string, company_description: string) => Promise<GeneralSignInOutput>;
-    createOnlyCompany: (company_name: string, company_description: string) => Promise<GeneralSignInOutput>;
+    emailPasswordCreateUser: (email: string, password: string, name: string, company_name: string, company_description: string, company_phone: string) => Promise<GeneralSignInOutput>;
+    createOnlyCompany: (company_name: string, company_description: string, company_phone: string) => Promise<GeneralSignInOutput>;
 }
 
 export type GeneralSignInOutput = {

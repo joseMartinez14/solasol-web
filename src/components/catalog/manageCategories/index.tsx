@@ -167,3 +167,4 @@ const ManageCategories = (props: ManageCategoriesProps) => {
 };
 
 export default ManageCategories;
+

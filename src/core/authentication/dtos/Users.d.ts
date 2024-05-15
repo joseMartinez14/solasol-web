@@ -11,6 +11,7 @@ export type Company = {
   id: number;
   name: string;
   description: string;
+  phoneNumber: string;
   is_active?: boolean;
   created_at?: Date;
 }
@@ -28,9 +29,12 @@ export type createUserCompanyDto = {
   email: string;
   company_name: string;
   company_description: string | null;
+  phoneNumber: string | null;
+
 }
 
 export type createOnlyCompanyDto = {
   companyName: string;
   companyDescription: string | null;
+  phoneNumber: string | null;
 }

@@ -33,7 +33,6 @@ const InsertImages = (props: InsertImagesProps) => {
                 }
             };
             reader.readAsDataURL(file);
-            console.log(imageList)
         }
     };
 
@@ -73,6 +72,8 @@ const InsertImages = (props: InsertImagesProps) => {
                                 <Box width={'220px'} height={'250px'} display={'flex'} flexDirection={'column'}
                                     sx={{
                                         border: '1px solid #000',
+                                        borderRadius: 5,
+                                        backgroundColor: '#EDEFF2',
                                         justifyContent: 'center',
                                         alignItems: 'center'
                                     }} >
@@ -87,7 +88,7 @@ const InsertImages = (props: InsertImagesProps) => {
                 </Box>
             </Box>
 
-        </div>
+        </div >
     );
 };
 

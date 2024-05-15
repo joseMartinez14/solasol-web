@@ -1,0 +1,29 @@
+@keyframes slide-in {
+    from {
+        transform: translateX(-100%);
+        /* Start off-screen to the left */
+    }
+
+    to {
+        transform: translateX(0);
+        /* Animate to the right */
+    }
+}
+
+.item-enter {
+    opacity: 0;
+}
+
+.item-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in-out;
+}
+
+.item-exit {
+    opacity: 1;
+}
+
+.item-exit-active {
+    opacity: 0;
+    transition: opacity 500ms ease-in-out;
+}

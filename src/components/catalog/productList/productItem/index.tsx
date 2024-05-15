@@ -1,9 +1,10 @@
 import { Card, CardContent, Typography, CardHeader, Box } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ProductImages } from '../../../../core/dtos/Products';
-
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import '../productAnimation.css'; // Import CSS for animations
 
 interface ProductItemProps {
     title: string;
@@ -15,14 +16,25 @@ interface ProductItemProps {
     stock: number;
     discount: number;
     currency: string;
+    whatsapp?: string;
 }
 
 const ProductItem = (props: ProductItemProps) => {
 
-    const { title, subtitle, cardHeight, cardWidth, images, price, stock, discount, currency } = props;
+    const { title, subtitle, cardHeight, cardWidth, images, price, stock, discount, currency, whatsapp } = props;
     const subtitleMaxLenght = 65;
 
     const [fotoindex, setFotoIndex] = useState<number>(0);
+
+    const reducted_currency = useMemo(() => {
+        if (currency == 'Colones') {
+            return '₡';
+        }
+        if (currency == 'Dolares') {
+            return '$';
+        }
+        return currency;
+    }, [currency]);
 
     const nextPicture = () => {
         if (images) {
@@ -43,8 +55,12 @@ const ProductItem = (props: ProductItemProps) => {
         }
     }
 
+    const roundedNumber = (num: number): number => {
+        return parseFloat(num.toFixed(2));
+    };
+
     return (
-        <Card sx={{ width: cardWidth, height: cardHeight }} raised>
+        <Card className="product-card" sx={{ width: cardWidth, height: cardHeight, borderRadius: 8, backgroundColor: "#F1F9FF" }} raised>
             <CardHeader
                 title={title}
                 subheader={subtitle.length > subtitleMaxLenght ? `${subtitle.substring(0, subtitleMaxLenght)}...` : subtitle}
@@ -72,15 +88,23 @@ const ProductItem = (props: ProductItemProps) => {
                 <Box width={"100%"} height={"15%"}>
                     <Box display={'flex'} flexDirection={'row'}>
                         <Typography variant="body2">Precio:</Typography>
-                        <Typography variant="body2" pl={1} sx={{ textDecoration: discount ? 'line-through' : 'none', color: discount ? '#F96115' : 'none' }}>{price}</Typography>
+                        <Typography variant="body2" pl={1} sx={{ textDecoration: discount ? 'line-through' : 'none', color: discount ? '#F96115' : 'none' }}>{reducted_currency}{price}</Typography>
                         {
                             discount > 0 && (
-                                <Typography variant="body2" pl={1} sx={{ color: '#228B22' }}>-{discount}% {price - (price * (discount / 100))}</Typography>
+                                <Typography variant="body2" pl={1} sx={{ color: '#228B22' }}>-{discount}%  {reducted_currency}{roundedNumber(price - (price * (discount / 100)))}</Typography>
                             )
                         }
-                        <Typography variant="body2" pl={1}> {currency}</Typography>
                     </Box>
                     <Typography variant="body2">{stock ? "Disponible" : "Acabado"}</Typography>
+                    {whatsapp && (
+                        <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'}>
+                            <Typography variant="body2" color={'#188841'}></Typography>
+                            <div>
+                                <WhatsAppIcon sx={{ fontSize: 30, color: '#25D366' }} />
+                            </div>
+                        </Box>
+                    )}
+
                 </Box>
             </CardContent>
         </Card>
@@ -89,3 +113,4 @@ const ProductItem = (props: ProductItemProps) => {
 }
 
 export default ProductItem;
+

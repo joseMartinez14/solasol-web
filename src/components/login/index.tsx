@@ -41,15 +41,13 @@ export default function SignIn() {
     } = useForm<LoginForm>({});
 
     const onSubmit = async (data: LoginForm) => {
-        console.log("THis is on submit login: ", data);
         const output = await emailPasswordSignIn(data.email, data.password)
-        console.log("---- output -----")
-        console.log(output)
     }
 
     const handleSignInWithGoogle = async () => {
         console.log("Google sign in")
         const result = await googleSignIn();
+        console.log("Local storage login: ", localStorage.getItem('firebaseAuthToken'));
         if (result.outcome) {
             navigate("/company");
         }
@@ -118,7 +116,7 @@ export default function SignIn() {
                             </Link>
                         </Grid>
                         <Grid item>
-                            <Link href="#" variant="body2">
+                            <Link href="/signup" variant="body2">
                                 {"Don't have an account? Sign Up"}
                             </Link>
                         </Grid>
