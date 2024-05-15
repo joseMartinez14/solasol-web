@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import AppRouter from './router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AppContextProvider } from './context/AppContext/Provider';
+import LoadingModal from './components/shared/LoadingModal';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

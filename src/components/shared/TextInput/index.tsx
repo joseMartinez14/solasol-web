@@ -14,10 +14,11 @@ interface TextInputProps {
     type?: string;
     justNumber?: boolean;
     rows?: number;
+    disabled?: boolean;
 }
 
 const TextInput = (props: TextInputProps) => {
-    const { control, title, value, error, isRequired, placeholder, styles, multiline, rows, justNumber, type } = props;
+    const { control, title, value, error, isRequired, placeholder, styles, multiline, rows, justNumber, type, disabled } = props;
 
     return (
         <Box sx={styles}>
@@ -44,6 +45,7 @@ const TextInput = (props: TextInputProps) => {
                         <TextField
                             error={Boolean(error)}
                             multiline={multiline}
+                            disabled={disabled}
                             rows={rows}
                             helperText={error}
                             sx={{

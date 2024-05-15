@@ -7,6 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import { useNavigate } from "react-router-dom";
 import Button from '@mui/material/Button';
 
 interface Column {
@@ -51,6 +52,7 @@ const ProductsTable = (props: ProductListProps) => {
 
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const navigate = useNavigate();
 
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
@@ -64,6 +66,7 @@ const ProductsTable = (props: ProductListProps) => {
     const onUpdateClick = (data: Data) => {
         console.log("--------");
         console.log(data);
+        navigate(`/company/product/${data.id}`);
     }
 
     return (

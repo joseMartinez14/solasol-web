@@ -9,6 +9,7 @@ import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { Google as GoogleIcon } from '@mui/icons-material';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -16,6 +17,7 @@ import { AppContext } from '../../context/AppContext';
 import { useForm } from 'react-hook-form';
 import { SignUpCompanyForm, SignUpFullForm } from './type';
 import TextInput from '../shared/TextInput';
+import { COLORS } from '../../utils/Contants';
 
 function Copyright(props: any) {
     return (
@@ -45,39 +47,15 @@ export default function SignUp() {
 
     const onSubmit = async (data: SignUpFullForm) => {
         console.log("THis is on submit login: ", data);
-        const output = await emailPasswordCreateUser(data.email, data.password, data.name, data.companyName, data.companyDescription)
+        let parsedPhone = "";
+        if (data.phoneNumber) {
+            parsedPhone = `506${data.phoneNumber}`;
+        }
+        const output = await emailPasswordCreateUser(data.email, data.password, data.name, data.companyName, data.companyDescription, parsedPhone)
         console.log("---- output of handle submit -----");
         console.log(output);
     }
 
-
-
-    const handleSubmit2 = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        const email = data.get('email')?.toString();
-        const password = data.get('password')?.toString();
-        const name = data.get('name')?.toString();
-        const company_name = data.get('company_name')?.toString();
-        let company_description = data.get('company_description')?.toString();
-        if (company_description == undefined) {
-            company_description = ""
-        }
-
-        console.log("This is the user before signup");
-        console.log(user);
-
-        if (email != null && password != null && name != null && company_name != null) {
-            const output = await emailPasswordCreateUser(email, password, name, company_name, company_description)
-            console.log("---- output of handle submit -----");
-            console.log(output);
-
-            console.log("This is the user after signup");
-            console.log(user);
-        } else {
-            console.log("Ponga toda la vara miher");
-        }
-    };
 
     const handleGoogleSignIn = async () => {
         console.log("Before google sign in ***-*---*-*-*")
@@ -157,6 +135,51 @@ export default function SignUp() {
                                     error={errors?.companyDescription ? "Inserte la descripcion de la compañia" : undefined}
                                 />
                             </Grid>
+                            <Grid item xs={4}>
+                                <>
+                                    <Typography
+                                        variant="subtitle2"
+                                        gutterBottom
+                                        sx={{
+                                            color: COLORS.black,
+                                            fontSize: '18px',
+                                            margin: 0,
+                                            padding: 0,
+                                            fontWeight: 500,
+                                        }}>
+                                        {"País"}
+                                    </Typography>
+                                    <TextField
+                                        disabled
+                                        sx={{
+                                            width: '100%',
+                                            color: COLORS.secondary,
+                                            borderColor: COLORS.neutral400,
+                                        }}
+                                        inputProps={{
+                                            style: {
+                                                height: '16px',
+                                                backgroundColor: COLORS.neutral100,
+                                            },
+                                        }}
+                                        value={"506"}
+                                        id={"Country-506"}
+                                        variant="outlined"
+                                    />
+                                </>
+
+                            </Grid>
+                            <Grid item xs={8}>
+                                <TextInput
+                                    control={control}
+                                    title={"# whatsapp"}
+                                    value="phoneNumber"
+                                    isRequired={false}
+                                    styles={{ mb: 3 }}
+                                    justNumber
+                                    error={errors?.phoneNumber ? "Inserte el numero de la compañia" : undefined}
+                                />
+                            </Grid>
                         </Grid>
                         <Button
                             type="submit"
@@ -170,13 +193,14 @@ export default function SignUp() {
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
+                            startIcon={<GoogleIcon />}
                             onClick={handleGoogleSignIn}
                         >
                             Sign Up with google
                         </Button>
                         <Grid container justifyContent="flex-end">
                             <Grid item>
-                                <Link href="#" variant="body2">
+                                <Link href="/signin" variant="body2">
                                     Already have an account? Sign in
                                 </Link>
                             </Grid>

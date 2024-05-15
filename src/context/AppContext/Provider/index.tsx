@@ -9,11 +9,15 @@ import {
     onAuthStateChanged,
     GoogleAuthProvider,
     UserCredential,
-    createUserWithEmailAndPassword
+    createUserWithEmailAndPassword,
+    getIdToken,
+
+
 } from "firebase/auth";
 import firebase_app from '../../../firebase/config';
 import { Company, User, createOnlyCompanyDto, createUserCompanyDto, findOrCreateDto } from '../../../core/authentication/dtos/Users';
 import api from '../../../core/config';
+import axios from 'axios';
 
 export interface AppContextProviderProps {
     children: ReactNode;
@@ -84,10 +88,10 @@ export const AppContextProvider = (props: AppContextProviderProps) => {
 
     const auth = getAuth(firebase_app);
 
-    const createOnlyCompany = async (company_name: string, company_description: string): Promise<GeneralSignInOutput> => {
+    const createOnlyCompany = async (company_name: string, company_description: string, company_phone: string): Promise<GeneralSignInOutput> => {
         try {
 
-            const fetch_result = await createCompany({ companyName: company_name, companyDescription: company_description });
+            const fetch_result = await createCompany({ companyName: company_name, companyDescription: company_description, phoneNumber: company_phone });
             if (fetch_result.company == null) {
                 console.log("Error with login")
                 console.log(fetch_result?.error)
@@ -104,14 +108,12 @@ export const AppContextProvider = (props: AppContextProviderProps) => {
 
 
     const googleSignIn = async (): Promise<GeneralSignInOutput> => {
-        //Este es solo login sin empresa.
-        //Se manda al api el nomnbre, el uuid, email
-        //Tengo que tener 2 entry points en el api 1 para google y otro para email-password
         try {
             const provider = new GoogleAuthProvider();
             let result = await signInWithPopup(auth, provider);
             const token = await result.user.getIdToken();
-            await localStorage.setItem('firebaseAuthToken', token || 'Null token');
+            localStorage.setItem('firebaseAuthToken', token || 'Null token');
+            axios.defaults.headers.Authirization = `Bearer ${token}`;
             console.log("Firebase result:")
             console.log(result)
             const fetch_data = { name: result.user.displayName, uuid: result.user.uid, email: result.user.email }
@@ -161,12 +163,12 @@ export const AppContextProvider = (props: AppContextProviderProps) => {
         }
     }
 
-    const emailPasswordCreateUser = async (email: string, password: string, name: string, company_name: string, company_description: string): Promise<GeneralSignInOutput> => {
+    const emailPasswordCreateUser = async (email: string, password: string, name: string, company_name: string, company_description: string, company_phone: string): Promise<GeneralSignInOutput> => {
         try {
             const result = await createUserWithEmailAndPassword(auth, email, password);
             const token = await result.user.getIdToken();
             await await localStorage.setItem('firebaseAuthToken', token || 'Null token');
-            const fetch_data = { name, uuid: result.user.uid, email: email, company_name: company_name, company_description: company_description }
+            const fetch_data = { name, uuid: result.user.uid, email: email, company_name: company_name, company_description: company_description, phoneNumber: company_phone }
             const fetch_result = await createUserCompany(fetch_data);
             if (fetch_result.user == null) {
                 console.log("Error with login")

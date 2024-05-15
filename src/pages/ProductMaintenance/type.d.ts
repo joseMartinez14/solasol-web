@@ -1,4 +1,5 @@
 export interface ProductMaintenanceForm {
+  id: number;
   name: string;
   description: string;
   price: string;

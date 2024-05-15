@@ -4,9 +4,11 @@ export interface SignUpFullForm {
     password:string;
     companyName: string;
     companyDescription: string;
+    phoneNumber: string;
 }
 
 export interface SignUpCompanyForm {
     companyName: string;
     companyDescription: string;
+    phoneNumber: string;
 }
