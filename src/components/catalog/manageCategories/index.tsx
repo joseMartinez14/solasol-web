@@ -1,8 +1,7 @@
-import { Controller } from 'react-hook-form';
 import { Box, Button, Grid, MenuItem, Paper, Select, TextField, Typography } from '@mui/material';
 import { COLORS } from '../../../utils/Contants';
 import { CompanyCategory } from '../../../core/dtos/Products';
-import React, { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 

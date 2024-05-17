@@ -1,10 +1,8 @@
 import axios, { AxiosError } from 'axios';
 
-import firebase from 'firebase/app';
 import 'firebase/auth';
 import firebase_app from '../firebase/config';
 import { getAuth, getIdToken } from 'firebase/auth';
-import { Token } from '@mui/icons-material';
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_API_URL,

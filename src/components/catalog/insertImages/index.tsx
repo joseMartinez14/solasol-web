@@ -1,6 +1,5 @@
-import { Box, Button, IconButton, ImageList, ImageListItem, ImageListItemBar, List, ListItem, ListItemText, Typography } from '@mui/material';
-import React, { useRef, useState } from 'react';
-import InfoIcon from '@mui/icons-material/Info';
+import { Box, Button, List, ListItem } from '@mui/material';
+import React, { useRef } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 interface ImageItem {
