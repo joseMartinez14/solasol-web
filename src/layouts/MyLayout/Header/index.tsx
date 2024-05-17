@@ -9,12 +9,8 @@ function Header() {
     return (
         <AppBar position="static" sx={{ backgroundColor: "black", mb: 2, height: 60 }}>
             <Toolbar >
-                <img
-                    src="/path/to/your/logo.png"
-                    style={{ maxWidth: 40 }}
-                />
                 <Typography variant="h5" component="div" sx={{ pl: '15px', flexGrow: 1 }}>
-                    Easy Catalog
+                    Easy Catalog (Work in Progress)
                 </Typography>
                 <Box>
                     <Button sx={{ color: COLORS.headerTextColor }} component={Link} to="/signin">Login</Button>

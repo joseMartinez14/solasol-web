@@ -10,7 +10,6 @@ import TextInput from "../../components/shared/TextInput";
 import ProductItem from "../../components/catalog/productList/productItem";
 import InsertImages from "../../components/catalog/insertImages";
 import ManageCategories from "../../components/catalog/manageCategories";
-import { AxiosError } from "axios";
 import { useAllCompanyCategories } from "../../core/hooks/CategoryHook";
 import LoadingModal from "../../components/shared/LoadingModal";
 
@@ -45,6 +44,8 @@ const ProductMaintenance = () => {
     const { data: product, isLoading: productsLoading, error: productError } = useProductByID(product_id || '-1');
     const { data: allCategories, isLoading: categoriesLoading, error: categoriesError } = useAllCompanyCategories();
 
+    const Swal = require('sweetalert2')
+
     useEffect(() => {
         if (categoriesError) {
             navigate("/signin");
@@ -53,6 +54,18 @@ const ProductMaintenance = () => {
     }, [categoriesError]);
 
     const { mutate, data: createProductReturn, error, isSuccess, isPending } = useCreateProduct();
+
+    useEffect(() => {
+        if (isSuccess) {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Se guardo el producto",
+                showConfirmButton: false,
+                timer: 2500
+            });
+        }
+    }, [isSuccess]);
 
     useEffect((() => {
         if (createProductReturn) {
@@ -97,7 +110,7 @@ const ProductMaintenance = () => {
             }
 
             if (product.categories) {
-                setcategoryList([...categoryList, ...product.categories]);
+                setcategoryList([...product.categories]);
             }
         }
     }, [product]);
@@ -123,6 +136,7 @@ const ProductMaintenance = () => {
     const onSubmit = (data: ProductMaintenanceForm) => {
         console.log("Estoy en onsubmit", data);
         const newImagelist = imageList.filter(obj => obj.id < 0);
+        const oldImagelist = imageList.filter(obj => obj.id > 0);
         const structure_data = {
             id: data.id,
             name: data.name,
@@ -132,7 +146,7 @@ const ProductMaintenance = () => {
             discount: Number(data.discount),
             stock: Number(data.stock),
             productNewImages: newImagelist.map(obj => obj.file!),
-            productImagesIDToDelete: imagesToDelete.map(obj => obj.id),
+            oldImagesIDs: oldImagelist.map(obj => obj.id),
             addCategories: categoryList.map(obj => obj.name),
             deleteCategories: categoriesToDelete.map(obj => obj.name)
         };
@@ -154,7 +168,7 @@ const ProductMaintenance = () => {
 
     return (
         <div  >
-            <LoadingModal open={(productsLoading || categoriesLoading)} />
+            <LoadingModal open={(productsLoading || categoriesLoading || isPending)} />
             <Box textAlign="center" pt={4}>
                 <Typography variant="h4" sx={{ fontSize: "32px" }}>
                     Agregar/Modificar Producto

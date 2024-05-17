@@ -114,18 +114,12 @@ export const AppContextProvider = (props: AppContextProviderProps) => {
             const token = await result.user.getIdToken();
             localStorage.setItem('firebaseAuthToken', token || 'Null token');
             axios.defaults.headers.Authirization = `Bearer ${token}`;
-            console.log("Firebase result:")
-            console.log(result)
             const fetch_data = { name: result.user.displayName, uuid: result.user.uid, email: result.user.email }
             const fetch_result = await fetchFindOrCreateuser(fetch_data)
 
             if (fetch_result.user == null) {
-                console.log("Error with login")
-                console.log(fetch_result?.error)
                 return { outcome: false, message: "Login unsuccessful" }
             } else {
-                console.log("The user is **** ");
-                console.log(fetch_result.user)
                 setUser(fetch_result.user)
                 await localStorage.setItem('instaCatalogCompanyName', fetch_result.user.company?.name || '<Nombre de empresa>')
                 return { outcome: true, message: "Success" }
@@ -167,7 +161,7 @@ export const AppContextProvider = (props: AppContextProviderProps) => {
         try {
             const result = await createUserWithEmailAndPassword(auth, email, password);
             const token = await result.user.getIdToken();
-            await await localStorage.setItem('firebaseAuthToken', token || 'Null token');
+            localStorage.setItem('firebaseAuthToken', token || 'Null token');
             const fetch_data = { name, uuid: result.user.uid, email: email, company_name: company_name, company_description: company_description, phoneNumber: company_phone }
             const fetch_result = await createUserCompany(fetch_data);
             if (fetch_result.user == null) {

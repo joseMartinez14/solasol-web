@@ -14,6 +14,8 @@ import { useForm } from 'react-hook-form';
 import { LoginForm } from './type';
 import TextInput from '../shared/TextInput';
 import { useNavigate } from "react-router-dom";
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
+import firebase_app from '../../firebase/config';
 
 
 function Copyright(props: any) {
@@ -34,6 +36,10 @@ export default function SignIn() {
     const { emailPasswordSignIn, googleSignIn } = React.useContext(AppContext);
     const navigate = useNavigate();
 
+    const auth = getAuth(firebase_app);
+
+    const Swal = require('sweetalert2');
+
     const {
         control,
         handleSubmit,
@@ -42,6 +48,38 @@ export default function SignIn() {
 
     const onSubmit = async (data: LoginForm) => {
         const output = await emailPasswordSignIn(data.email, data.password)
+        if (!output.outcome) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Correo o contraseña incorrecta",
+            });
+        }
+        navigate("/company");
+
+    }
+
+    const onForgotPassword = () => {
+        Swal.fire({
+            title: "Ingrese el correo para recuperar la contraseña",
+            input: 'text',
+            preConfirm: () => {
+
+                if (Swal.getInput()) {
+                    if (Swal.getInput().value) {
+                        sendPasswordResetEmail(auth, Swal.getInput().value).then(() => {
+                            Swal.fire("Revise su correo.");
+                        }).catch((err) => {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: err,
+                            });
+                        });
+                    }
+                }
+            },
+        })
     }
 
     const handleSignInWithGoogle = async () => {
@@ -111,9 +149,11 @@ export default function SignIn() {
                     </Button>
                     <Grid container>
                         <Grid item xs>
-                            <Link href="#" variant="body2">
-                                Forgot password?
-                            </Link>
+                            <div onClick={onForgotPassword}>
+                                <Link href="#" variant="body2">
+                                    Forgot password?
+                                </Link>
+                            </div>
                         </Grid>
                         <Grid item>
                             <Link href="/signup" variant="body2">

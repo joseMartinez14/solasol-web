@@ -55,6 +55,16 @@ const ProductItem = (props: ProductItemProps) => {
         }
     }
 
+    const onWhatsappClick = () => {
+
+        if (whatsapp) {
+            const text = `Hola tengo interes en el producto: ${title}`;
+            const encodedText = encodeURIComponent(text);
+            const url = `https://wa.me/${whatsapp}?text=${encodedText}`
+            window.open(url, '_blank', 'noopener,noreferrer');
+        }
+    }
+
     const roundedNumber = (num: number): number => {
         return parseFloat(num.toFixed(2));
     };
@@ -99,7 +109,7 @@ const ProductItem = (props: ProductItemProps) => {
                     {whatsapp && (
                         <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'}>
                             <Typography variant="body2" color={'#188841'}></Typography>
-                            <div>
+                            <div onClick={onWhatsappClick}>
                                 <WhatsAppIcon sx={{ fontSize: 30, color: '#25D366' }} />
                             </div>
                         </Box>

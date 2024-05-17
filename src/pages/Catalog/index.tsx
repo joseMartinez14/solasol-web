@@ -20,6 +20,8 @@ const Catalog = () => {
     const [orderBy, setOrderBy] = useState<string>('');
     const [companyName, setCompanyName] = useState<string>('');
 
+    const Swal = require('sweetalert2');
+
     const is_not_filtered = (prod: Product): Boolean => {
         if (prod.categories) {
             for (let i = 0; i < categoryFilters.length; i++) {
@@ -71,10 +73,19 @@ const Catalog = () => {
     }
 
     const data = useMemo(() => {
+
         if (isLoadingProducts) return [];
         if (allProducts !== undefined && allProducts !== void 0) {
-            if (allProducts[0].company) {
-                setCompanyName(allProducts[0].company.name);
+            if (allProducts.length > 0) {
+                if (allProducts[0].company) {
+                    setCompanyName(allProducts[0].company.name);
+                }
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "La empresa no existe o no tiene ningun producto",
+                });
             }
             let products_to_return = [];
             if (categoryFilters.length === 0) {

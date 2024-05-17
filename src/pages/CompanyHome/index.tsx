@@ -1,13 +1,7 @@
 import { Box, Typography } from "@mui/material";
-import { COLORS } from '../../utils/Contants';
-import ShowControls from "../../components/catalog/showControls";
 import { useProducts, useProductsByCompanyID } from "../../core/hooks/ProductHook";
 import { useEffect, useMemo } from "react";
-import { Product } from "../../core/dtos/Products";
-import TableExample from "../../components/company/chatgpt/tableExample";
-import { Description } from "@mui/icons-material";
-import ProductsTable from "../../components/company/productsTable";
-import { AxiosError } from "axios";
+import ProductsTable from "../../components/catalog/productsTable";
 import { useNavigate } from "react-router-dom";
 import LoadingModal from "../../components/shared/LoadingModal";
 

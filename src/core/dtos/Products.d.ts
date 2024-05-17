@@ -42,7 +42,7 @@ export type createOrUpdateDto = {
     updated_at?: Date;
     stock: number;
     productNewImages: File[];
-    productImagesIDToDelete: number[];
+    oldImagesIDs: number[];
     addCategories: string[];
     deleteCategories: string[];
 }
