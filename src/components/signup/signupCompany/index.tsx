@@ -56,7 +56,7 @@ export default function SignCompanyUp() {
         setLoading(true);
         const output = await createOnlyCompany(data.companyName, data.companyDescription, parsedPhone);
         setLoading(false);
-        navigate("/company");
+        navigate("/solasol-web/company");
 
 
         console.log("---- output of handle submit -----");

@@ -55,7 +55,7 @@ export default function SignIn() {
                 text: "Correo o contraseña incorrecta",
             });
         }
-        navigate("/company");
+        navigate("/solasol-web/company");
 
     }
 
@@ -87,7 +87,7 @@ export default function SignIn() {
         const result = await googleSignIn();
         console.log("Local storage login: ", localStorage.getItem('firebaseAuthToken'));
         if (result.outcome) {
-            navigate("/company");
+            navigate("/solasol-web/company");
         }
         else {
             console.log("googleSignIn failed, ", result.message)

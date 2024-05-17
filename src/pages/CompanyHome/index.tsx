@@ -25,7 +25,7 @@ const CompanyHome = () => {
 
     useEffect(() => {
         if (error) {
-            navigate("/signin");
+            navigate("/solasol-web/signin");
         }
 
     }, [error]);

@@ -24,7 +24,7 @@ function Header() {
 
     const logOutClick = () => {
         logOut();
-        navigate('/');
+        navigate('/solasol-web/');
     }
 
     return (

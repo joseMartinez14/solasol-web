@@ -62,7 +62,7 @@ export default function SignUp() {
 
     const handleGoogleSignIn = async () => {
         const result = await googleSignIn();
-        navigate("/signCompanyUp");
+        navigate("/solasol-web/signCompanyUp");
 
     }
 

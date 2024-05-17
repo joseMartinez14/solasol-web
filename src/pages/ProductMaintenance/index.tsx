@@ -48,7 +48,7 @@ const ProductMaintenance = () => {
 
     useEffect(() => {
         if (categoriesError) {
-            navigate("/signin");
+            navigate("/solasol-web/signin");
         }
 
     }, [categoriesError]);
