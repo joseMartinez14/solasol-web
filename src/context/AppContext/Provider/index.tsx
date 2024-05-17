@@ -1,16 +1,14 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { AppContext } from '..';
-import { GeneralSignInOutput, UserType } from '../type';
+import { GeneralSignInOutput } from '../type';
 import {
     signInWithEmailAndPassword,
     getAuth,
     signInWithPopup,
     signOut,
-    onAuthStateChanged,
     GoogleAuthProvider,
     UserCredential,
     createUserWithEmailAndPassword,
-    getIdToken,
 
 
 } from "firebase/auth";

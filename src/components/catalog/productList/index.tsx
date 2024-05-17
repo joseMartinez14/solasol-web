@@ -1,4 +1,4 @@
-import { Box, Grid, Card, CardContent, Typography, CardHeader } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import ProductItem from './productItem';
 import { Product } from '../../../core/dtos/Products';
 import { CSSTransition } from 'react-transition-group';
