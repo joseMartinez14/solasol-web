@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/solasol-web/static/css/main.46ae8be8.css",
-    "main.js": "/solasol-web/static/js/main.b00b0747.js",
-    "static/js/787.7b87cc75.chunk.js": "/solasol-web/static/js/787.7b87cc75.chunk.js",
-    "index.html": "/solasol-web/index.html",
-    "main.46ae8be8.css.map": "/solasol-web/static/css/main.46ae8be8.css.map",
-    "main.b00b0747.js.map": "/solasol-web/static/js/main.b00b0747.js.map",
-    "787.7b87cc75.chunk.js.map": "/solasol-web/static/js/787.7b87cc75.chunk.js.map"
+    "main.css": "/static/css/main.46ae8be8.css",
+    "main.js": "/static/js/main.42756fcb.js",
+    "static/js/787.7b87cc75.chunk.js": "/static/js/787.7b87cc75.chunk.js",
+    "index.html": "/index.html",
+    "main.46ae8be8.css.map": "/static/css/main.46ae8be8.css.map",
+    "main.42756fcb.js.map": "/static/js/main.42756fcb.js.map",
+    "787.7b87cc75.chunk.js.map": "/static/js/787.7b87cc75.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.46ae8be8.css",
-    "static/js/main.b00b0747.js"
+    "static/js/main.42756fcb.js"
   ]
 }
