@@ -64,7 +64,7 @@ const ProductsTable = (props: ProductListProps) => {
     };
 
     const onUpdateClick = (data: Data) => {
-        navigate(`/company/product/${data.id}`);
+        navigate(`/solasol-web/company/product/${data.id}`);
     }
 
     return (

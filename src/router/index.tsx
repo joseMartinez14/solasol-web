@@ -14,16 +14,16 @@ const AppRouter = () => {
         <Router>
             <Routes>
                 <Route element={<MyLayout />}>
-                    <Route element={<Home />} path="/" />
+                    <Route element={<Home />} path="/solasol-web/" />
                 </Route>
-                <Route element={<Catalog />} path="/:company_id/catalog" />
+                <Route element={<Catalog />} path="/solasol-web/:company_id/catalog" />
                 <Route element={<CompanyLayout />}>
-                    <Route element={<CompanyHome />} path="/company" />
-                    <Route element={<ProductMaintenance />} path="/company/product/:product_id?" />
+                    <Route element={<CompanyHome />} path="/solasol-web/company" />
+                    <Route element={<ProductMaintenance />} path="/solasol-web/company/product/:product_id?" />
                 </Route>
-                <Route element={<SignUp />} path="/signup" />
-                <Route element={<SignCompanyUp />} path="/signCompanyUp" />
-                <Route element={<SignIn />} path="/signin" />
+                <Route element={<SignUp />} path="/solasol-web/signup" />
+                <Route element={<SignCompanyUp />} path="/solasol-web/signCompanyUp" />
+                <Route element={<SignIn />} path="/solasol-web/signin" />
             </Routes>
         </Router >
     );
