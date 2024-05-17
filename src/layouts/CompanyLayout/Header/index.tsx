@@ -23,7 +23,6 @@ function Header() {
     })
 
     const logOutClick = () => {
-        console.log("Salgase de aqui carepicha");
         logOut();
         navigate('/');
     }

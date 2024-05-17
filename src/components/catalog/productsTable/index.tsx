@@ -64,8 +64,6 @@ const ProductsTable = (props: ProductListProps) => {
     };
 
     const onUpdateClick = (data: Data) => {
-        console.log("--------");
-        console.log(data);
         navigate(`/company/product/${data.id}`);
     }
 

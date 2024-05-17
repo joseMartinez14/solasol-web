@@ -1,9 +1,6 @@
 import { Box, Grid, Card, CardContent, Typography, CardHeader } from '@mui/material';
-import CardGridGPT from '../GPT-Tests/card-grid';
 import ProductItem from './productItem';
 import { Product } from '../../../core/dtos/Products';
-import { useEffect, useRef } from 'react';
-import autoAnimate from '@formkit/auto-animate'
 import { CSSTransition } from 'react-transition-group';
 import './styles.css';
 
@@ -34,6 +31,7 @@ const ProductList = (props: ProductListProps) => {
                                 price={item.price}
                                 discount={item.discount}
                                 currency={item.currency}
+                                whatsapp={item.company?.phoneNumber}
                             />
                         </Grid>
                     </CSSTransition>

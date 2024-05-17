@@ -7,14 +7,17 @@ import { getAuth, getIdToken } from 'firebase/auth';
 import { Token } from '@mui/icons-material';
 
 const api = axios.create({
-  //baseURL: process.env.REACT_APP_API_URL,
-  baseURL: 'http://localhost:3001/api/',
+  baseURL: process.env.REACT_APP_API_URL,
+  //baseURL: 'http://localhost:3001/api/',
   headers: {
     Authorization: `Bearer ${localStorage.getItem('firebaseAuthToken')}`,
   }
 });
 
 api.interceptors.request.use((config) => {
+
+  console.log("============");
+  console.log(process.env.REACT_APP_API_URL)
 
   const token = localStorage.getItem('firebaseAuthToken');
   config.headers.Authorization = token ? `Bearer ${token}` : '';
