@@ -18,19 +18,6 @@ import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 import firebase_app from '../../firebase/config';
 
 
-function Copyright(props: any) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
-
 export default function SignIn() {
 
     const { emailPasswordSignIn, googleSignIn } = React.useContext(AppContext);
@@ -56,7 +43,6 @@ export default function SignIn() {
             });
         }
         navigate("/company");
-
     }
 
     const onForgotPassword = () => {

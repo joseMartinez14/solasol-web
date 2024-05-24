@@ -48,10 +48,11 @@ const ProductMaintenance = () => {
 
     useEffect(() => {
         if (categoriesError) {
-            navigate("/signin");
+            Swal.fire("Primero se tiene que loggear.").then(navigate("/"));
         }
 
-    }, [categoriesError]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [categoriesError, productError]);
 
     const { mutate, data: createProductReturn, error, isSuccess, isPending } = useCreateProduct();
 

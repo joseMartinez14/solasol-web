@@ -90,16 +90,17 @@ export const AppContextProvider = (props: AppContextProviderProps) => {
         try {
 
             const fetch_result = await createCompany({ companyName: company_name, companyDescription: company_description, phoneNumber: company_phone });
-            if (fetch_result.company == null) {
+            if (fetch_result.company) {
+                localStorage.setItem('easyCatalogCompanyName', fetch_result.company?.name || '<Nombre de empresa>')
+                return { outcome: true, message: "Success" }
+
+            } else {
                 console.log("Error with login")
                 console.log(fetch_result?.error)
                 return { outcome: false, message: "Login unsuccessful" }
-            } else {
-                await localStorage.setItem('instaCatalogCompanyName', fetch_result.company?.name || '<Nombre de empresa>')
-                return { outcome: true, message: "Success" }
             }
         } catch (e) {
-            console.log("login by email and password did'n work: ", e)
+            console.log("create company did'n work: ", e)
             return { outcome: false, message: "Login unsuccessful" }
         }
     }
@@ -119,11 +120,11 @@ export const AppContextProvider = (props: AppContextProviderProps) => {
                 return { outcome: false, message: "Login unsuccessful" }
             } else {
                 setUser(fetch_result.user)
-                await localStorage.setItem('instaCatalogCompanyName', fetch_result.user.company?.name || '<Nombre de empresa>')
+                if (fetch_result.user.company) {
+                    localStorage.setItem('easyCatalogCompanyName', fetch_result.user.company.name || '<Nombre de empresa>')
+                }
                 return { outcome: true, message: "Success" }
             }
-            //Hacer el llamado a otra function que vaya y agarre los datos del usuario
-            return { outcome: true, message: "Success" }
         } catch (e) {
             console.log("login by email and password did'n work: ", e)
             return { outcome: false, message: "Login unsuccessful" }
@@ -132,55 +133,9 @@ export const AppContextProvider = (props: AppContextProviderProps) => {
 
     const logOut = () => {
         signOut(auth);
-        localStorage.removeItem('instaCatalogCompanyName');
+        localStorage.removeItem('easyCatalogCompanyName');
         localStorage.removeItem('firebaseAuthToken');
     }
-
-    const emailPasswordSignIn = async (email: string, password: string): Promise<GeneralSignInOutput> => {
-        let result: UserCredential | null = null
-        try {
-            result = await signInWithEmailAndPassword(auth, email, password);
-            const token = await result.user.getIdToken();
-            await localStorage.setItem('firebaseAuthToken', token || 'Null token');
-            const fetch_data = { name: result.user.displayName, uuid: result.user.uid, email: result.user.email }
-            const fetch_result = await fetchFindOrCreateuser(fetch_data)
-            if (fetch_result.user) {
-                await localStorage.setItem('instaCatalogCompanyName', fetch_result.user.company?.name || '<Nombre de empresa>')
-            }
-            console.log(result);
-            return { outcome: true, message: "Success" }
-        } catch (e) {
-            console.log("login by email and password did'n work: ", e)
-            return { outcome: false, message: "Login unsuccessful" }
-        }
-    }
-
-    const emailPasswordCreateUser = async (email: string, password: string, name: string, company_name: string, company_description: string, company_phone: string): Promise<GeneralSignInOutput> => {
-        try {
-            const result = await createUserWithEmailAndPassword(auth, email, password);
-            const token = await result.user.getIdToken();
-            localStorage.setItem('firebaseAuthToken', token || 'Null token');
-            const fetch_data = { name, uuid: result.user.uid, email: email, company_name: company_name, company_description: company_description, phoneNumber: company_phone }
-            const fetch_result = await createUserCompany(fetch_data);
-            if (fetch_result.user == null) {
-                console.log("Error with login")
-                console.log(fetch_result)
-                return { outcome: false, message: "Login unsuccessful" }
-            } else {
-                console.log("login correcto");
-                console.log(fetch_result);
-                setUser(fetch_result.user)
-                await localStorage.setItem('instaCatalogCompanyName', fetch_result.user.company?.name || '<Nombre de empresa>')
-                return { outcome: true, message: "Success" }
-            }
-            //I should create the company and user
-        } catch (e) {
-            console.log("login by email and password did'n work: ", e)
-            return { outcome: false, message: "Login unsuccessful" }
-        }
-    }
-
-
 
     useEffect(() => {
 
@@ -188,7 +143,7 @@ export const AppContextProvider = (props: AppContextProviderProps) => {
 
     return (
         <AppContext.Provider
-            value={{ user, logOut, emailPasswordSignIn, googleSignIn, emailPasswordCreateUser, createOnlyCompany }}>
+            value={{ user, logOut, googleSignIn, createOnlyCompany }}>
             {children}
         </AppContext.Provider>
     );

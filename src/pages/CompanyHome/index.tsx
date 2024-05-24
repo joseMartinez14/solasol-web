@@ -22,12 +22,14 @@ const CompanyHome = () => {
 
     const navigate = useNavigate();
     const { data: allProducts, isLoading, error } = useProducts();
+    const Swal = require('sweetalert2');
 
     useEffect(() => {
         if (error) {
-            navigate("/signin");
+            Swal.fire("Primero se tiene que loggear.").then(navigate("/"));
         }
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [error]);
 
     const products_list_data = useMemo(() => {

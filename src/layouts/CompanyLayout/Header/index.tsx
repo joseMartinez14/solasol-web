@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 function Header() {
 
-    const [CompanyLogged, setCompanyLogged] = useState<string>(localStorage.getItem('instaCatalogCompanyName') || '');
+    const [CompanyLogged, setCompanyLogged] = useState<string>(localStorage.getItem('easyCatalogCompanyName') || '');
 
     const { logOut } = React.useContext(AppContext);
     const navigate = useNavigate();
@@ -19,8 +19,8 @@ function Header() {
 
 
     useEffect(() => {
-        setCompanyLogged(localStorage.getItem('instaCatalogCompanyName') || '');
-    })
+        setCompanyLogged(localStorage.getItem('easyCatalogCompanyName') || '');
+    }, [])
 
     const logOutClick = () => {
         logOut();

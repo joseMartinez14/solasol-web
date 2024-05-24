@@ -23,7 +23,6 @@ const AppRouter = () => {
                 </Route>
                 <Route element={<SignUp />} path="/signup" />
                 <Route element={<SignCompanyUp />} path="/signCompanyUp" />
-                <Route element={<SignIn />} path="/signin" />
             </Routes>
         </Router >
     );
