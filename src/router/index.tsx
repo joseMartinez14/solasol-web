@@ -1,10 +1,8 @@
-import { BrowserRouter as Router, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Catalog from '../pages/Catalog';
 import SignUp from '../components/signup';
-import SignIn from '../components/login';
 import { MyLayout, CompanyLayout } from '../layouts';
 import Home from '../pages/Home';
-import PrivateOnlyRoutes from '../layouts/PrivateOnlyRoutes';
 import CompanyHome from '../pages/CompanyHome';
 import ProductMaintenance from '../pages/ProductMaintenance';
 import SignCompanyUp from '../components/signup/signupCompany';

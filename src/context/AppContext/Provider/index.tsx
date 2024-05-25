@@ -2,18 +2,15 @@ import { ReactNode, useEffect, useState } from 'react';
 import { AppContext } from '..';
 import { GeneralSignInOutput } from '../type';
 import {
-    signInWithEmailAndPassword,
     getAuth,
     signInWithPopup,
     signOut,
     GoogleAuthProvider,
-    UserCredential,
-    createUserWithEmailAndPassword,
 
 
 } from "firebase/auth";
 import firebase_app from '../../../firebase/config';
-import { Company, User, createOnlyCompanyDto, createUserCompanyDto, findOrCreateDto } from '../../../core/authentication/dtos/Users';
+import { Company, User, createOnlyCompanyDto, findOrCreateDto } from '../../../core/authentication/dtos/Users';
 import api from '../../../core/config';
 import axios from 'axios';
 
@@ -45,22 +42,6 @@ const fetchFindOrCreateuser = async (formData: findOrCreateDto): Promise<UserFin
     return result
 }
 
-//This is for simple login and google login 
-const createUserCompany = async (formData: createUserCompanyDto): Promise<UserFindorReplaceReturn> => {
-    //Mandar request al api y a ver si se recibe el usuario 
-    const result = await api.post<User>('/users/user_company', formData)
-        .then((res) => {
-            console.log("Response from api")
-            console.log(res)
-            return { user: res.data, error: null }
-        })
-        .catch((error) => {
-            console.log("Error en api")
-            console.log(error);
-            return { user: null, error: error }
-        });
-    return result;
-}
 
 //This is for simple login and google login 
 const createCompany = async (formData: createOnlyCompanyDto): Promise<CompanyCreateReturn> => {
@@ -111,7 +92,6 @@ export const AppContextProvider = (props: AppContextProviderProps) => {
             const provider = new GoogleAuthProvider();
             let result = await signInWithPopup(auth, provider);
             const token = await result.user.getIdToken();
-            localStorage.setItem('firebaseAuthToken', token || 'Null token');
             axios.defaults.headers.Authirization = `Bearer ${token}`;
             const fetch_data = { name: result.user.displayName, uuid: result.user.uid, email: result.user.email }
             const fetch_result = await fetchFindOrCreateuser(fetch_data)
@@ -119,6 +99,7 @@ export const AppContextProvider = (props: AppContextProviderProps) => {
             if (fetch_result.user == null) {
                 return { outcome: false, message: "Login unsuccessful" }
             } else {
+                localStorage.setItem('firebaseAuthToken', token || 'Null token');
                 setUser(fetch_result.user)
                 if (fetch_result.user.company) {
                     localStorage.setItem('easyCatalogCompanyName', fetch_result.user.company.name || '<Nombre de empresa>')

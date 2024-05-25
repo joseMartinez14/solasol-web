@@ -27,10 +27,10 @@ const ProductItem = (props: ProductItemProps) => {
     const [fotoindex, setFotoIndex] = useState<number>(0);
 
     const reducted_currency = useMemo(() => {
-        if (currency == 'Colones') {
+        if (currency === 'Colones') {
             return '₡';
         }
-        if (currency == 'Dolares') {
+        if (currency === 'Dolares') {
             return '$';
         }
         return currency;
@@ -81,6 +81,7 @@ const ProductItem = (props: ProductItemProps) => {
                     <Box width={"100%"} height={"92%"}>
                         {images && images.length > 0 &&
                             <img src={images[fotoindex].url}
+                                alt=''
                                 style={{
                                     width: '100%', height: '100%', objectFit: 'contain'
                                 }} />

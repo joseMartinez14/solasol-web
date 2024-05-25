@@ -45,7 +45,3 @@ function Header() {
 }
 
 export default Header;
-
-function googleSignIn() {
-    throw new Error('Function not implemented.');
-}

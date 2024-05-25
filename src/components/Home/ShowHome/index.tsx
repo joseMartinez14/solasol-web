@@ -1,11 +1,34 @@
 import { Box, Paper, Typography } from "@mui/material";
-import { COLORS, Texts } from "../../../utils/Contants";
+import { COLORS } from "../../../utils/Contants";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 const ShowHome = () => {
 
+    const [buttomText, setButtomText] = useState<string>("Configurar mi empresa");
+    const [redirectPage, setRedirectPage] = useState<string>("/");
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const auth = localStorage.getItem('firebaseAuthToken');
+        const company_name = localStorage.getItem('easyCatalogCompanyName');
+        if (auth) {
+            if (auth !== 'Null token') {
+                if (company_name) {
+                    setRedirectPage("/company");
+                    setButtomText("Mi compañía");
+                }
+            }
+        }
+
+    }, [navigate])
+
+
     const companySetupClick = () => {
-        console.log("This is company set up")
+        navigate(redirectPage);
+
     }
 
     return (
@@ -24,7 +47,7 @@ const ShowHome = () => {
                             color: COLORS.white,
                             fontSize: '20px'
                         }}>
-                        {Texts.company_setup_buttom}
+                        {buttomText}
                     </Paper>
                 </div>
 

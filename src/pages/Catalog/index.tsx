@@ -45,22 +45,17 @@ const Catalog = () => {
 
     const sortProducts = (list: Product[]): Product[] => {
 
-        if (orderBy == 'price-desc') {
+        if (orderBy === 'price-desc') {
             return list.sort((a, b) => a.price - b.price);
         }
-        if (orderBy == 'price-asc') {
+        if (orderBy === 'price-asc') {
             return list.sort((a, b) => b.price - a.price);
         }
-        if (orderBy == 'date-new') {
-            console.log("On date change")
+        if (orderBy === 'date-new') {
             return list.slice().sort((productA, productB) => {
                 // Handle potential missing created_at values
-                console.log("-------------")
-                console.log(productA)
-                console.log(productB)
 
                 if (!productA.created_at || !productB.created_at) {
-                    console.log("111111")
                     return productA.created_at ? -1 : (productB.created_at ? 1 : 0);
                 }
 

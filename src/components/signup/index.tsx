@@ -17,7 +17,7 @@ import { SignUpCompanyForm } from './type';
 import TextInput from '../shared/TextInput';
 import { COLORS } from '../../utils/Contants';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import LoadingModal from '../shared/LoadingModal';
 
 function Copyright(props: any) {
@@ -42,6 +42,7 @@ export default function SignUp() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState<boolean>(false);
     const [userLogged, setUserLogged] = useState<boolean>(false);
+    const Swal = require('sweetalert2');
 
     const {
         control,
@@ -49,21 +50,51 @@ export default function SignUp() {
         formState: { errors },
     } = useForm<SignUpCompanyForm>({});
 
+    useEffect(() => {
+        const auth = localStorage.getItem('firebaseAuthToken');
+        const company_name = localStorage.getItem('easyCatalogCompanyName');
+
+        if (auth) {
+            if (auth !== 'Null token') {
+                if (company_name) {
+                    navigate("/company");
+                } else {
+                    setUserLogged(true);
+                }
+            }
+        }
+
+    }, [navigate]);
+
     const onSubmit = async (data: SignUpCompanyForm) => {
+        setLoading(true);
         console.log("THis is on submit login: ", data);
         let parsedPhone = "";
         if (data.phoneNumber) {
             parsedPhone = `506${data.phoneNumber}`;
         }
-        const output = await createOnlyCompany(data.companyName, data.companyDescription, parsedPhone)
-        console.log("---- output of handle submit -----");
-        console.log(output);
+        const output = await createOnlyCompany(data.companyName, data.companyDescription, parsedPhone);
+        setLoading(false);
+        if (output.outcome) {
+            navigate("/company");
+        }
+        else {
+            console.log("googleSignIn failed, ", output.message)
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Signup error.",
+            });
+            navigate("/");
+        }
+
     }
 
 
     const handleGoogleSignIn = async () => {
+        setLoading(true);
         const result = await googleSignIn();
-
+        setLoading(false);
         if (result.outcome) {
             const auth = localStorage.getItem('firebaseAuthToken');
             if (auth) {
@@ -100,16 +131,17 @@ export default function SignUp() {
                             Sign up
                         </Typography>
 
-                        <Button
-                            fullWidth
-                            variant="contained"
-                            sx={{ my: 5 }}
-                            startIcon={<GoogleIcon />}
-                            onClick={handleGoogleSignIn}
-                        >
-                            Sign Up with google
-                        </Button>
-
+                        {!userLogged && (
+                            <Button
+                                fullWidth
+                                variant="contained"
+                                sx={{ my: 5 }}
+                                startIcon={<GoogleIcon />}
+                                onClick={handleGoogleSignIn}
+                            >
+                                Sign Up with google
+                            </Button>
+                        )}
 
                         {userLogged && (
                             <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>

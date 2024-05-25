@@ -25,7 +25,10 @@ const CompanyHome = () => {
     const Swal = require('sweetalert2');
 
     useEffect(() => {
+
         if (error) {
+            console.log("dgeibi")
+            console.log(error)
             Swal.fire("Primero se tiene que loggear.").then(navigate("/"));
         }
 
