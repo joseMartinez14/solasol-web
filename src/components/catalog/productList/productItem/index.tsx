@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography, CardHeader, Box } from '@mui/material';
+import { Card, CardContent, Typography, CardHeader, Box, Modal } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { useMemo, useState } from 'react';
@@ -25,6 +25,15 @@ const ProductItem = (props: ProductItemProps) => {
     const subtitleMaxLenght = 65;
 
     const [fotoindex, setFotoIndex] = useState<number>(0);
+    const [openModal, setOpenModal] = useState<boolean>(false);
+    const [openImg, setOpenImg] = useState<string>('');
+    const handleOpen = (url: string) => {
+
+        setOpenImg(url);
+        setOpenModal(true);
+
+    };
+    const handleClose = () => setOpenModal(false);
 
     const reducted_currency = useMemo(() => {
         if (currency === 'Colones') {
@@ -70,55 +79,79 @@ const ProductItem = (props: ProductItemProps) => {
     };
 
     return (
-        <Card className="product-card" sx={{ width: cardWidth, height: cardHeight, borderRadius: 8, backgroundColor: "#F1F9FF" }} raised>
-            <CardHeader
-                title={title}
-                subheader={subtitle.length > subtitleMaxLenght ? `${subtitle.substring(0, subtitleMaxLenght)}...` : subtitle}
-                sx={{ height: (cardHeight * 0.15) }}
-            />
-            <CardContent sx={{ height: (cardHeight * 0.85) }}>
-                <Box width={"100%"} height={"85%"}>
-                    <Box width={"100%"} height={"92%"}>
-                        {images && images.length > 0 &&
-                            <img src={images[fotoindex].url}
-                                alt=''
-                                style={{
-                                    width: '100%', height: '100%', objectFit: 'contain'
-                                }} />
-                        }
-                    </Box>
-                    <Box width={"100%"} height={"8%"} display={"flex"} px={5} justifyContent={"space-between"}>
-                        <div onClick={prevPicture}>
-                            <KeyboardArrowLeftIcon />
-                        </div>
-                        <div onClick={nextPicture}>
-                            <KeyboardArrowRightIcon />
-                        </div>
-                    </Box>
-                </Box>
-                <Box width={"100%"} height={"15%"}>
-                    <Box display={'flex'} flexDirection={'row'}>
-                        <Typography variant="body2">Precio:</Typography>
-                        <Typography variant="body2" pl={1} sx={{ textDecoration: discount ? 'line-through' : 'none', color: discount ? '#F96115' : 'none' }}>{reducted_currency}{price}</Typography>
-                        {
-                            discount > 0 && (
-                                <Typography variant="body2" pl={1} sx={{ color: '#228B22' }}>-{discount}%  {reducted_currency}{roundedNumber(price - (price * (discount / 100)))}</Typography>
+        <>
+            <div onClick={handleClose}>
+
+                <Modal
+                    open={openModal}
+                    onClose={handleClose}
+                    sx={{
+                        height: '90vh',
+                        mt: 5,
+                        mx: 2
+                    }}
+                >
+                    <img src={openImg}
+                        alt=''
+                        style={{
+                            width: '100%', height: '100%', objectFit: 'contain'
+                        }} />
+                </Modal>
+            </div>
+
+            <Card className="product-card" sx={{ width: cardWidth, height: cardHeight, borderRadius: 8, backgroundColor: "#F1F9FF" }} raised>
+                <CardHeader
+                    title={title}
+                    subheader={subtitle.length > subtitleMaxLenght ? `${subtitle.substring(0, subtitleMaxLenght)}...` : subtitle}
+                    sx={{ height: (cardHeight * 0.15) }}
+                />
+                <CardContent sx={{ height: (cardHeight * 0.85) }}>
+                    <Box width={"100%"} height={"85%"}>
+                        <Box width={"100%"} height={"92%"}>
+                            {images && images.length > 0 && (
+                                <div onClick={() => handleOpen(images[fotoindex].url)}>
+                                    <img src={images[fotoindex].url}
+                                        alt=''
+                                        style={{
+                                            width: '100%', height: '100%', objectFit: 'contain'
+                                        }} />
+                                </div>
                             )
-                        }
-                    </Box>
-                    <Typography variant="body2">{stock ? "Disponible" : "Acabado"}</Typography>
-                    {whatsapp && (
-                        <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'}>
-                            <Typography variant="body2" color={'#188841'}></Typography>
-                            <div onClick={onWhatsappClick}>
-                                <WhatsAppIcon sx={{ fontSize: 30, color: '#25D366' }} />
+                            }
+                        </Box>
+                        <Box width={"100%"} height={"8%"} display={"flex"} px={5} justifyContent={"space-between"}>
+                            <div onClick={prevPicture}>
+                                <KeyboardArrowLeftIcon />
+                            </div>
+                            <div onClick={nextPicture}>
+                                <KeyboardArrowRightIcon />
                             </div>
                         </Box>
-                    )}
+                    </Box>
+                    <Box width={"100%"} height={"15%"}>
+                        <Box display={'flex'} flexDirection={'row'}>
+                            <Typography variant="body2">Precio:</Typography>
+                            <Typography variant="body2" pl={1} sx={{ textDecoration: discount ? 'line-through' : 'none', color: discount ? '#F96115' : 'none' }}>{reducted_currency}{price}</Typography>
+                            {
+                                discount > 0 && (
+                                    <Typography variant="body2" pl={1} sx={{ color: '#228B22' }}>-{discount}%  {reducted_currency}{roundedNumber(price - (price * (discount / 100)))}</Typography>
+                                )
+                            }
+                        </Box>
+                        <Typography variant="body2">{stock ? "Disponible" : "Acabado"}</Typography>
+                        {whatsapp && (
+                            <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'}>
+                                <Typography variant="body2" color={'#188841'}></Typography>
+                                <div onClick={onWhatsappClick}>
+                                    <WhatsAppIcon sx={{ fontSize: 30, color: '#25D366' }} />
+                                </div>
+                            </Box>
+                        )}
 
-                </Box>
-            </CardContent>
-        </Card>
+                    </Box>
+                </CardContent>
+            </Card>
+        </>
     );
 
 }

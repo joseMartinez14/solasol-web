@@ -1,75 +1,93 @@
-
-import api from '../config';
-import { Product, createOrUpdateDto } from '../dtos/Products';
+import api from "../config";
+import { Product, createOrUpdateDto } from "../dtos/Products";
 
 const fetchProducts = async () => {
-    //SHOULD INCLUDE THE ID. THERE IS NO CASE WHERE I NEED ALL THE PRODUCTS FOR ALL COMPANIES
+  //SHOULD INCLUDE THE ID. THERE IS NO CASE WHERE I NEED ALL THE PRODUCTS FOR ALL COMPANIES
   return await api
-    .get<[Product]>('/products')
+    .get<[Product]>("/products")
     .then((res) => {
       return res.data;
     })
-    .catch((err) => {throw err});
+    .catch((err) => {
+      throw err;
+    });
 };
 
-
 const fetchProductsByCompany = async (company_id: string) => {
-    //SHOULD INCLUDE THE ID. THERE IS NO CASE WHERE I NEED ALL THE PRODUCTS FOR ALL COMPANIES
+  //SHOULD INCLUDE THE ID. THERE IS NO CASE WHERE I NEED ALL THE PRODUCTS FOR ALL COMPANIES
   return await api
     .get<[Product]>(`/products/client/${company_id}`)
     .then((res) => {
       return res.data;
     })
-    .catch((err) => {throw err});
+    .catch((err) => {
+      throw err;
+    });
 };
 
 const fetchProductById = async (id: string) => {
-    //SHOULD INCLUDE THE ID. THERE IS NO CASE WHERE I NEED ALL THE PRODUCTS FOR ALL COMPANIES
-    return await api
+  //SHOULD INCLUDE THE ID. THERE IS NO CASE WHERE I NEED ALL THE PRODUCTS FOR ALL COMPANIES
+  return await api
     .get<Product>(`/products/${id}`)
     .then((res) => {
       console.log("Resultado de fetchProductById: ");
-      console.log(res)
+      console.log(res);
       return res.data;
     })
     .catch((err) => {
-      throw err});
+      throw err;
+    });
+};
+
+const deleteProduct = async (id: string) => {
+  //SHOULD INCLUDE THE ID. THERE IS NO CASE WHERE I NEED ALL THE PRODUCTS FOR ALL COMPANIES
+  return await api
+    .delete<any>(`/products/${id}`)
+    .then((res) => {
+      console.log("Resultado de deleteProduct: ");
+      console.log(res);
+      return res.data;
+    })
+    .catch((err) => {
+      throw err;
+    });
 };
 
 const createOrUpdateProduct = async (data: createOrUpdateDto) => {
   console.log("on createOrUpdateProduct **");
 
   const formData = new FormData();
-  formData.append('id', String(data.id));
-  formData.append('name', data.name);
-  formData.append('description', data.description);
-  formData.append('price', String(data.price));
-  formData.append('currency', String(data.currency));
-  formData.append('discount', String(data.discount));
-  formData.append('stock', String(data.stock));
+  formData.append("id", String(data.id));
+  formData.append("name", data.name);
+  formData.append("description", data.description);
+  formData.append("price", String(data.price));
+  formData.append("currency", String(data.currency));
+  formData.append("discount", String(data.discount));
+  formData.append("stock", String(data.stock));
   //formData.append('productNewImages', data.productNewImages[0]);
 
-
-  if(data.productNewImages){ 
+  if (data.productNewImages) {
     data.productNewImages.forEach((file, index) => {
       formData.append(`productNewImages`, file);
     });
   }
 
-  if(data.oldImagesIDs){ 
+  if (data.oldImagesIDs) {
     data.oldImagesIDs.forEach((id, index) => {
       formData.append(`oldImagesIDs`, String(id));
     });
   }
 
-  if(data.addCategories){ 
+  if (data.addCategories) {
     data.addCategories.forEach((category, index) => {
       formData.append(`addCategories`, category);
     });
   }
 
-  if(data.deleteCategories){ 
-    const categories = Array.isArray(data.deleteCategories) ? data.deleteCategories : [data.deleteCategories];
+  if (data.deleteCategories) {
+    const categories = Array.isArray(data.deleteCategories)
+      ? data.deleteCategories
+      : [data.deleteCategories];
     data.deleteCategories.forEach((category, index) => {
       formData.append(`deleteCategories`, category);
     });
@@ -79,15 +97,23 @@ const createOrUpdateProduct = async (data: createOrUpdateDto) => {
   console.log(formData);
 
   return await api
-    .post<Product>(`/products`, formData, {headers: { "Content-Type": "multipart/form-data" },})
-    .then((res)=>{
+    .post<Product>(`/products`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+    .then((res) => {
       console.log("createOrUpdateProduct si paso y funciono");
       console.log(res);
     })
-    .catch((err)=>{
+    .catch((err) => {
       console.log("createOrUpdateProduct no funciono y fallo");
       console.log(err);
-    })
+    });
 };
 
-export { fetchProducts, fetchProductsByCompany, createOrUpdateProduct, fetchProductById};
+export {
+  fetchProducts,
+  fetchProductsByCompany,
+  createOrUpdateProduct,
+  fetchProductById,
+  deleteProduct,
+};

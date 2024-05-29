@@ -114,7 +114,8 @@ const Catalog = () => {
                     <Typography variant="h4" component="div">
                         {companyName}
                     </Typography>
-                    <ShoppingCartIcon />
+                    <Typography variant="h6" component="div">
+                    </Typography>
                 </Toolbar>
             </AppBar>
             <Box  >

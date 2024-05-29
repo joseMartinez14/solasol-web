@@ -66,6 +66,7 @@ const ProductMaintenance = () => {
                 timer: 2500
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isSuccess]);
 
     useEffect((() => {
