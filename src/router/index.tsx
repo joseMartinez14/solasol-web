@@ -6,6 +6,7 @@ import Home from '../pages/Home';
 import CompanyHome from '../pages/CompanyHome';
 import ProductMaintenance from '../pages/ProductMaintenance';
 import SignCompanyUp from '../components/signup/signupCompany';
+import CatalogHome from '../pages/Catalog/Home';
 
 const AppRouter = () => {
     return (
@@ -15,6 +16,7 @@ const AppRouter = () => {
                     <Route element={<Home />} path="/" />
                 </Route>
                 <Route element={<Catalog />} path="/:company_id/catalog" />
+                <Route element={<CatalogHome />} path="/catalog" />
                 <Route element={<CompanyLayout />}>
                     <Route element={<CompanyHome />} path="/company" />
                     <Route element={<ProductMaintenance />} path="/company/product/:product_id?" />
